@@ -143,7 +143,7 @@ const TaskflowAttendance = {
 
         if (statusText) {
           statusText.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22C55E;margin-right:6px;box-shadow:0 0 8px #22C55E;"></span>Active Shift • In at ${record.formatted_check_in || 'Today'} (${formattedDuration})`;
-          statusText.style.color = 'var(--color-brand-primary)';
+          statusText.style.color = '#4ADE80';
         }
 
         if (sessionDetails) {
@@ -165,10 +165,10 @@ const TaskflowAttendance = {
       if (statusText) {
         if (record && record.check_out_time) {
           statusText.textContent = `Completed Work Session • Checked out at ${record.formatted_check_out} (${record.total_hours} hrs)`;
-          statusText.style.color = 'var(--color-text-muted)';
+          statusText.style.color = '#94A3B8';
         } else {
           statusText.textContent = 'Not Checked In Today';
-          statusText.style.color = 'var(--color-text-muted)';
+          statusText.style.color = '#94A3B8';
         }
       }
 

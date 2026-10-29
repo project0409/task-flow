@@ -11,10 +11,11 @@ if __name__ == "__main__":
 
     print(f"\n========================================================")
     print(f"[OK] Taskflow Pro Enterprise Server running at:")
-    print(f"  --> http://{host}:{port}")
-    print(f"  Admin Portal: http://{host}:{port}/admin/login")
-    print(f"  Demo Admin:   admin@taskflow.local  (password: Admin@123)")
-    print(f"  Demo Lead:    lead_backend@taskflow.local  (password: password123)")
+    print(f"  --> Login Page:   http://{host}:{port}/login")
+    print(f"  --> App Root:     http://{host}:{port}/")
+    print(f"  --> Admin Portal: http://{host}:{port}/admin/login")
+    print(f"  Demo Admin:       admin@taskflow.local  (password: Admin@123)")
+    print(f"  Demo Lead:        lead_backend@taskflow.local  (password: password123)")
     print(f"========================================================\n")
 
     socketio.run(app, host=host, port=port, debug=debug, allow_unsafe_werkzeug=True)

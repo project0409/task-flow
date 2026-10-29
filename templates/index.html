@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -390,20 +390,27 @@
 
       <!-- VIEW 3: DELIVERABLE REVIEW PIPELINE -->
       <section data-view="review-pipeline" hidden>
-        <div class="card" style="margin-bottom: 16px;">
-          <div class="card-h" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h3>Deliverable Review Pipeline</h3>
-              <p class="card-sub">Inspect developer implementation notes, inspect Pull Request branches, review artifacts, and approve deliverables.</p>
+        <!-- Review Pipeline Hero Banner -->
+        <div class="review-hero-banner" style="background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); border-radius: 14px; padding: 22px 28px; margin-bottom: 20px; color: #FFF; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 4px 20px rgba(49, 46, 129, 0.25);">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <h2 style="margin:0; font-size:20px; font-weight:800; color:#FFF;">Lead Review &amp; Deliverable Sign-off</h2>
+              <span class="pill" style="background:rgba(255,255,255,0.2); color:#FFF; font-size:11px; font-weight:700;">CI/CD Quality Gate</span>
             </div>
-            <span class="pill s-In-Review" id="review-pipeline-count-pill" style="font-size: 13px; font-weight: 600;">0 In Review</span>
+            <p style="margin:4px 0 0; font-size:13px; color:rgba(255,255,255,0.85);">Inspect developer implementation notes, audit Git pull requests, and approve deliverables into production.</p>
+          </div>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div style="background:rgba(255,255,255,0.14); padding:10px 20px; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,0.22); backdrop-filter:blur(8px);">
+              <div style="font-size:24px; font-weight:800; color:#4ADE80; line-height:1;" id="review-stat-pending">0</div>
+              <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.5px; opacity:0.85; margin-top:2px;">In Review Queue</div>
+            </div>
           </div>
         </div>
+
         <div class="review-pipeline-grid" id="review-pipeline-container">
           <!-- Dynamically populated by tasks.js -->
         </div>
       </section>
-
       <!-- VIEW 4: CATEGORIES WORKSPACE -->
       <section data-view="categories" hidden>
         <div class="card">
@@ -718,18 +725,116 @@
 
       <!-- VIEW: MEETINGS & VIRTUAL CONFERENCING -->
       <section data-view="meetings" hidden>
-        <div class="view-header flex-between" style="margin-bottom: 20px;">
-          <div>
-            <h2 style="margin: 0 0 4px; font-size: 20px; font-weight: 700; color: var(--color-text-primary);">Team Meetings & Video Collaboration</h2>
-            <p class="text-sm text-muted" style="margin: 0;">Connect with your squad, join standups, and schedule technical alignments.</p>
+
+        <!-- Meetings Hero Header -->
+        <div class="meetings-hero-banner">
+          <div class="meetings-hero-left">
+            <div class="meetings-hero-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="meetings-hero-badge-row">
+                <h2 class="meetings-hero-title">Team Meetings & Video Collaboration</h2>
+                <span class="meetings-role-pill" id="meetings-role-pill">Workspace</span>
+              </div>
+              <p class="meetings-hero-sub">Connect with your squad, join live standups, and schedule technical alignments.</p>
+            </div>
           </div>
-          <div>
-            <button type="button" class="btn primary" id="btn-open-schedule-meeting" style="display: none;">
+          <div class="meetings-hero-actions">
+            <button type="button" class="btn meetings-refresh-btn" id="btn-refresh-meetings" title="Refresh meetings list">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              <span>Refresh</span>
+            </button>
+            <button type="button" class="btn meetings-huddle-btn" id="btn-quick-huddle" style="display: none;" title="Start an instant 15-minute squad sync">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <span>Instant Huddle</span>
+            </button>
+            <button type="button" class="btn primary meetings-schedule-btn" id="btn-open-schedule-meeting" style="display: none;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
               <span>+ Schedule Meeting</span>
             </button>
+          </div>
+        </div>
+
+        <!-- Stats Summary Row -->
+        <div class="meetings-stats-row" id="meetings-stats-row">
+          <div class="meet-stat-chip">
+            <div class="meet-stat-icon-wrap icon-total">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <div>
+              <div class="meet-stat-val" id="meet-stat-total">0</div>
+              <div class="meet-stat-label">Total Sessions</div>
+            </div>
+          </div>
+          <div class="meet-stat-chip live-chip" id="meet-stat-live-chip">
+            <div class="meet-stat-icon-wrap icon-live">
+              <span class="live-dot-pulse"></span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="meet-stat-val" id="meet-stat-live">0</div>
+              <div class="meet-stat-label">Live Now</div>
+            </div>
+          </div>
+          <div class="meet-stat-chip">
+            <div class="meet-stat-icon-wrap icon-upcoming">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div>
+              <div class="meet-stat-val" id="meet-stat-scheduled">0</div>
+              <div class="meet-stat-label">Upcoming</div>
+            </div>
+          </div>
+          <div class="meet-stat-chip">
+            <div class="meet-stat-icon-wrap icon-duration">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l3 3"/>
+              </svg>
+            </div>
+            <div>
+              <div class="meet-stat-val" id="meet-stat-duration">0 min</div>
+              <div class="meet-stat-label">Avg Duration</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter/Search bar -->
+        <div class="meetings-filter-bar">
+          <div class="meetings-search-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="search" id="meetings-search-input" placeholder="Search meetings by title, squad, or host..." autocomplete="off">
+            <button type="button" id="meetings-search-clear" class="search-clear-btn" style="display: none;" title="Clear search">&times;</button>
+          </div>
+          <div class="meetings-filter-tabs" id="meetings-filter-tabs">
+            <button class="meet-filter-tab active" data-filter="all">All <span class="tab-pill" id="tab-cnt-all">0</span></button>
+            <button class="meet-filter-tab tab-live-filter" data-filter="Live"><span class="filter-live-beacon"></span> Live <span class="tab-pill live" id="tab-cnt-live">0</span></button>
+            <button class="meet-filter-tab" data-filter="Scheduled">Upcoming <span class="tab-pill" id="tab-cnt-sched">0</span></button>
+          </div>
+          <div class="meetings-squad-filter-wrap">
+            <select id="meetings-squad-filter" class="meetings-squad-select" title="Filter by Squad">
+              <option value="all">All Squads</option>
+              <option value="company">🌐 All Company</option>
+              <option value="1">⚙️ Backend Systems</option>
+              <option value="2">🖥️ Frontend Core</option>
+            </select>
           </div>
         </div>
 
@@ -797,29 +902,34 @@
 
       <!-- 8. SECTION: ATTENDANCE & LEAVE MANAGEMENT -->
       <section data-view="attendance" hidden>
-        <!-- Top Check-in Banner Widget -->
+        <!-- Top Check-in Hero Banner -->
         <div class="attendance-checkin-hero">
           <div class="hero-clock-block">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(34, 197, 94, 0.2); color: #4ADE80; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; border: 1px solid rgba(34, 197, 94, 0.3);">
+                <span style="width:6px; height:6px; background:#4ADE80; border-radius:50%; animation: badge-blink 1.4s infinite;"></span> LIVE
+              </span>
+              <div class="hero-date-str" id="att-live-date">Loading date...</div>
+            </div>
             <div class="hero-digital-clock" id="att-live-clock">--:--:--</div>
-            <div class="hero-date-str" id="att-live-date">Loading date...</div>
             <p class="hero-status-subtitle" id="att-checkin-status-text">Not Checked In Today</p>
             <div class="hero-session-metrics" id="att-session-details"></div>
           </div>
           <div class="hero-action-block">
             <button type="button" class="checkin-action-btn btn-in" id="btn-checkin-action">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
               </svg>
               <span>Check In</span>
             </button>
-            <button type="button" class="btn secondary" id="btn-open-apply-leave" style="margin-top: 10px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <button type="button" class="btn-open-leave-btn" id="btn-open-apply-leave">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                 <line x1="16" y1="2" x2="16" y2="6"/>
                 <line x1="8" y1="2" x2="8" y2="6"/>
                 <line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
-              Apply for Leave
+              <span>Apply for Leave</span>
             </button>
           </div>
         </div>
@@ -829,32 +939,45 @@
           <div class="card att-metric-card">
             <div class="att-metric-title">Today Logged</div>
             <div class="att-metric-value" id="att-metric-today">0 hrs</div>
-            <div class="att-metric-sub">Current active shift</div>
+            <div class="att-metric-sub">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Current active shift</span>
+            </div>
           </div>
           <div class="card att-metric-card">
             <div class="att-metric-title">Monthly Logged</div>
             <div class="att-metric-value" id="att-metric-monthly">0 hrs</div>
-            <div class="att-metric-sub">Accumulated hours</div>
+            <div class="att-metric-sub">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <span>Accumulated hours</span>
+            </div>
           </div>
           <div class="card att-metric-card">
             <div class="att-metric-title">Working Days</div>
             <div class="att-metric-value" id="att-metric-days">0 days</div>
-            <div class="att-metric-sub">Shifts this calendar month</div>
+            <div class="att-metric-sub">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Shifts this calendar month</span>
+            </div>
           </div>
           <div class="card att-metric-card">
             <div class="att-metric-title">Approved Leave Balance</div>
             <div class="att-metric-value" id="att-metric-balance">18 days</div>
-            <div class="att-metric-sub">Available PTO credits</div>
+            <div class="att-metric-sub">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Available PTO credits</span>
+            </div>
           </div>
         </div>
 
         <!-- Teammate Presence Live Bar -->
-        <div class="card" style="margin-bottom: 24px;">
-          <div class="card-head">
+        <div class="card interactive-card" style="margin-bottom: 24px;">
+          <div class="card-head" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div>
-              <h3>Squad Visual Presence</h3>
-              <p class="card-sub">Real-time attendance & leave statuses of your team members</p>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700;">Squad Visual Presence</h3>
+              <p class="card-sub" style="margin: 2px 0 0;">Real-time attendance &amp; shift statuses across your engineering roster</p>
             </div>
+            <span class="pill" style="background: rgba(34, 197, 94, 0.12); color: #16A34A; font-weight: 700;">Live Presence</span>
           </div>
           <div class="teammates-presence-grid" id="teammates-presence-container">
             <!-- Rendered by TaskflowAttendance.renderTeammates() -->
@@ -862,12 +985,13 @@
         </div>
 
         <!-- Team Lead Leave Approval Queue (conditionally shown for Leads/Admins) -->
-        <div class="card" id="leave-approval-card" style="display: none; margin-bottom: 24px;">
-          <div class="card-head">
+        <div class="card interactive-card" id="leave-approval-card" style="display: none; margin-bottom: 24px;">
+          <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <h3>Team Leave Approval Queue</h3>
-              <p class="card-sub">Review and approve team time-off requests with workload awareness</p>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700;">Team Leave Approval Queue</h3>
+              <p class="card-sub" style="margin: 2px 0 0;">Review, audit, and approve team time-off requests with workload awareness</p>
             </div>
+            <span class="pill s-In-Review" id="leave-queue-count" style="font-size: 12px; font-weight: 700;">Awaiting Action</span>
           </div>
           <div class="table-wrap">
             <table>
@@ -889,12 +1013,13 @@
         </div>
 
         <!-- Employee My Leave History -->
-        <div class="card">
-          <div class="card-head">
+        <div class="card interactive-card">
+          <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <h3>My Leave Applications & History</h3>
-              <p class="card-sub">Track submitted leave requests and approval status</p>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700;">My Leave Applications &amp; History</h3>
+              <p class="card-sub" style="margin: 2px 0 0;">Track your submitted time-off requests and approval status</p>
             </div>
+            <button type="button" class="btn btn-sm" onclick="document.getElementById('btn-open-apply-leave').click()" style="font-size: 12px; padding: 5px 12px;">+ New Request</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -914,7 +1039,6 @@
           </div>
         </div>
       </section>
-
     </main>
 
     <!-- 6. RIGHT SIDEBAR -->
@@ -1062,57 +1186,91 @@
     </form>
   </dialog>
 
-  <!-- Modal C: "Lead Review Drawer" -->
-  <dialog id="drawer-lead-review" style="width: min(640px, 94vw);">
-    <div class="dialog-h">
-      <div>
-        <h3>Lead Review Pipeline</h3>
+  <!-- Modal C: "Lead Review Drawer" (Modern Slide-Over) -->
+  <dialog id="drawer-lead-review">
+    <div class="review-drawer-header">
+      <div class="review-drawer-title-col">
+        <h3 id="review-task-title" style="margin: 0; font-size: 18px; font-weight: 800; color: #FFFFFF;">Lead Review Pipeline</h3>
         <span class="pill s-In-Review" style="margin-top: 4px;">Awaiting Decision</span>
       </div>
-      <button class="btn-close" id="btn-close-review-drawer">&times;</button>
+      <button class="review-drawer-close" id="btn-close-review-drawer" aria-label="Close">&times;</button>
     </div>
 
-    <div style="display: grid; gap: 14px;">
-      <div>
-        <strong style="display:block; font-size: 16px; margin-bottom: 2px;" id="review-task-title">Task Title</strong>
-        <span class="text-sm text-muted">Submitted by <b id="review-task-assignee">Engineer</b> on <span id="review-task-submitted-at">Today</span></span>
+    <div class="review-drawer-scroll-body">
+      <!-- Author info block -->
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--color-border);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #1E3A8A, #2563EB); color: #FFF; font-weight: 800;">PR</div>
+          <div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--color-text-primary);">
+              Submitted by <span id="review-task-assignee">Engineer</span>
+            </div>
+            <div style="font-size: 12px; color: var(--color-text-muted);" id="review-task-submitted-at">Today</div>
+          </div>
+        </div>
+        <span class="pill" id="review-task-category" style="background: rgba(34, 197, 94, 0.12); color: #15803D; font-weight: 700;">Deliverable PR</span>
       </div>
 
-      <!-- Submitted Git link -->
-      <div>
-        <strong style="display:block; font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Pull Request</strong>
-        <a href="#" target="_blank" rel="noopener" id="review-git-link" class="git-link-chip">View Git PR</a>
+      <!-- Git PR link -->
+      <div class="review-section-card">
+        <div class="review-section-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Pull Request &amp; Branch Link
+        </div>
+        <div class="review-pr-chip">
+          <a href="#" target="_blank" rel="noopener" id="review-git-link" class="review-pr-link-text">View Git PR</a>
+          <button type="button" class="btn btn-sm" onclick="TaskflowTasks.copyPrLink()" style="font-size:11.5px; padding:4px 10px; font-weight:600;">Copy Link</button>
+        </div>
       </div>
 
-      <!-- Submitted file link -->
-      <div>
-        <strong style="display:block; font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Attachment</strong>
-        <a href="#" target="_blank" id="review-proof-file" class="git-link-chip">Download Proof File</a>
+      <!-- Proof attachment link -->
+      <div class="review-section-card" id="review-proof-file-wrap">
+        <div class="review-section-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          Verification Proof Attachment
+        </div>
+        <a href="#" target="_blank" id="review-proof-file" class="git-link-chip" style="display:inline-flex; align-items:center; gap:8px;">
+          <span>Download Proof Document</span>
+        </a>
       </div>
 
       <!-- Notes -->
-      <div>
-        <strong style="display:block; font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Engineer Notes</strong>
-        <div class="review-notes-box" id="review-submission-notes"></div>
+      <div class="review-section-card">
+        <div class="review-section-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Developer's Implementation Summary
+        </div>
+        <div class="review-notes-preview" id="review-submission-notes"></div>
       </div>
 
-      <!-- Feedback textarea -->
-      <label>Reviewer Feedback / Revision Instructions
-        <textarea id="review-feedback-input" rows="3" placeholder="Provide actionable feedback or reasons if requesting changes..."></textarea>
-      </label>
-
-      <!-- Approve & Reject Action Buttons -->
-      <div class="actions" style="margin-top: 14px;">
-        <button type="button" class="btn danger" id="btn-review-reject">
-          Request Changes
-        </button>
-        <button type="button" class="btn primary" id="btn-review-approve">
-          Approve Deliverable
-        </button>
+      <!-- Feedback textarea & Quick Tags -->
+      <div>
+        <label class="review-section-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Reviewer Feedback &amp; Revision Instructions
+        </label>
+        <div class="quick-feedback-tags-row">
+          <button type="button" class="quick-feedback-tag" onclick="TaskflowTasks.appendReviewFeedback('✅ LGTM — Verified and approved for merge.')">✅ LGTM</button>
+          <button type="button" class="quick-feedback-tag" onclick="TaskflowTasks.appendReviewFeedback('🧪 Please add automated test coverage.')">🧪 Add Tests</button>
+          <button type="button" class="quick-feedback-tag" onclick="TaskflowTasks.appendReviewFeedback('⚡ Optimize query performance.')">⚡ Performance</button>
+          <button type="button" class="quick-feedback-tag" onclick="TaskflowTasks.appendReviewFeedback('🔒 Please verify RBAC authorization guard.')">🔒 Security Guard</button>
+        </div>
+        <textarea id="review-feedback-input" class="review-feedback-textarea" rows="4" placeholder="Provide feedback or instructions for revision..."></textarea>
       </div>
     </div>
-  </dialog>
 
+    <!-- Approve & Reject Action Buttons -->
+    <div class="review-drawer-footer">
+      <button type="button" class="btn-review-reject" id="btn-review-reject">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Request Changes
+      </button>
+      <button type="button" class="btn-review-approve" id="btn-review-approve">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Approve Deliverable
+      </button>
+    </div>
+  </dialog>
   <!-- Modal D: Task Detail Inspection Modal -->
   <dialog id="modal-task-detail">
     <div class="dialog-h">
@@ -1182,121 +1340,290 @@
   </dialog>
 
   <!-- Modal F: Schedule Team Meeting Modal (Admin/Lead) -->
-  <dialog id="modal-schedule-meeting">
-    <div class="dialog-h">
+  <dialog id="modal-schedule-meeting" class="meeting-schedule-dialog">
+    <div class="meeting-sched-dialog-header">
+      <div class="meeting-sched-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+      </div>
       <div>
-        <h3>Schedule Team Meeting</h3>
-        <p class="card-sub" style="margin: 2px 0 0;">Create a virtual meeting session for your squad or company</p>
+        <h3 style="margin: 0; font-size: 18px; font-weight: 700;">Schedule Team Meeting</h3>
+        <p style="margin: 2px 0 0; font-size: 12px; opacity: 0.75;">Create a virtual Jitsi Meet session for your squad or company</p>
       </div>
-      <button class="btn-close" id="btn-close-schedule-modal">&times;</button>
+      <button class="btn-close" id="btn-close-schedule-modal" style="margin-left: auto;">&times;</button>
     </div>
-    <form id="form-schedule-meeting">
-      <label>Meeting Title
-        <input type="text" name="title" required placeholder="e.g. Sprint Retrospective & Architecture Review">
-      </label>
-
-      <div class="row">
-        <label>Target Squad
-          <select name="team_id">
-            <option value="">All Company (All Squads)</option>
-            <option value="1">Backend Systems</option>
-            <option value="2">Frontend Core</option>
-          </select>
-        </label>
-        <label>Duration
-          <select name="duration_minutes">
-            <option value="15">15 Minutes (Daily Standup)</option>
-            <option value="30" selected>30 Minutes (Sprint Sync)</option>
-            <option value="45">45 Minutes (Design Review)</option>
-            <option value="60">60 Minutes (Strategic Alignment)</option>
-          </select>
-        </label>
+    <form id="form-schedule-meeting" style="padding: 24px; display: grid; gap: 18px;">
+      <div class="sched-form-field">
+        <label class="sched-label">Meeting Title *</label>
+        <input class="sched-input" type="text" name="title" required placeholder="e.g. Sprint Retrospective &amp; Architecture Review">
       </div>
-
-      <div class="row">
-        <label>Scheduled Date & Time
-          <input type="datetime-local" name="scheduled_time" id="meeting-sched-time" required>
-        </label>
+      <div class="sched-form-row">
+        <div class="sched-form-field">
+          <label class="sched-label">Target Squad</label>
+          <select class="sched-input" name="team_id">
+            <option value="">&#127758; All Company (All Squads)</option>
+            <option value="1">&#9881; Backend Systems</option>
+            <option value="2">&#128421; Frontend Core</option>
+          </select>
+        </div>
+        <div class="sched-form-field">
+          <label class="sched-label">Duration</label>
+          <select class="sched-input" name="duration_minutes">
+            <option value="15">&#9889; 15 min &mdash; Daily Standup</option>
+            <option value="30" selected>&#128260; 30 min &mdash; Sprint Sync</option>
+            <option value="45">&#127912; 45 min &mdash; Design Review</option>
+            <option value="60">60 min &mdash; Strategic Alignment</option>
+            <option value="90">&#128203; 90 min &mdash; Extended Session</option>
+          </select>
+        </div>
       </div>
-
-      <label>Agenda / Description
-        <textarea name="description" rows="3" placeholder="Key topics, pull request walkthroughs, or sprint milestones to cover..."></textarea>
-      </label>
-
-      <div class="actions">
+      <div class="sched-form-field">
+        <label class="sched-label">Scheduled Date &amp; Time *</label>
+        <input class="sched-input" type="datetime-local" name="scheduled_time" id="meeting-sched-time" required>
+      </div>
+      <div class="sched-form-field">
+        <label class="sched-label">Agenda / Description</label>
+        <textarea class="sched-input" name="description" rows="3" placeholder="Key topics, pull request walkthroughs, or sprint milestones to cover..."></textarea>
+      </div>
+      <div class="sched-jitsi-notice">
+        &#128274; A secure Jitsi Meet room will be auto-generated for this session
+      </div>
+      <div class="actions" style="margin: 0;">
         <button type="button" class="btn" onclick="document.getElementById('modal-schedule-meeting').close()">Cancel</button>
-        <button type="submit" class="btn primary">Schedule Session</button>
+        <button type="submit" class="btn primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          Launch Meeting Session
+        </button>
       </div>
     </form>
   </dialog>
-
   <!-- Modal G: Interactive Video Meeting Room (Employee & Admin) -->
   <dialog id="modal-active-meeting-room" class="meeting-room-dialog">
     <div class="meeting-room-header">
-      <div>
-        <h4 id="active-room-title" style="margin: 0; font-size: 17px; color: #FFFFFF;">Live Squad Meeting</h4>
-        <p id="active-room-squad" style="margin: 2px 0 0; font-size: 12px; color: #94A3B8;">Connecting...</p>
+      <div class="meeting-room-header-left">
+        <div class="room-live-indicator">
+          <span class="room-live-dot"></span>
+          <span>LIVE</span>
+        </div>
+        <div>
+          <h4 id="active-room-title" class="active-room-title">Live Squad Meeting</h4>
+          <p id="active-room-squad" class="active-room-squad">Connecting...</p>
+        </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <span id="active-room-timer" style="font-family: monospace; font-size: 15px; font-weight: 700; background: #0F172A; padding: 4px 10px; border-radius: 6px; color: #22C55E;">00:00</span>
-        <a id="active-room-ext-link" href="#" target="_blank" rel="noopener" class="btn btn-sm" style="background: #334155; color: #FFFFFF; font-size: 11.5px; padding: 5px 10px; text-decoration: none;" title="Open in external browser tab">
-          ↗ Open in Jitsi
+      <div class="meeting-room-header-right">
+        <span id="active-room-timer" class="active-room-timer">00:00</span>
+        <button type="button" class="btn btn-sm room-header-btn" id="btn-room-copy-link" title="Copy meeting link to clipboard">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span id="room-copy-text">Copy Link</span>
+        </button>
+        <a id="active-room-ext-link" href="#" target="_blank" rel="noopener" class="btn btn-sm room-header-btn room-jitsi-btn" title="Open in external Jitsi Meet browser tab">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <span>Open in Jitsi</span>
         </a>
+        <button type="button" class="room-close-btn" onclick="TaskflowMeetings.leaveMeetingRoom()" title="Close Room">&times;</button>
       </div>
     </div>
 
-    <div class="meeting-room-video-stage">
-      <div class="video-tile video-tile-self" id="meeting-self-preview">
-        <div style="text-align: center; color: #FFFFFF;">
-          <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; margin: 0 auto 12px;">
-            YOU
+    <div class="meeting-room-body-wrap">
+      <div class="meeting-room-video-stage">
+        <!-- Main Self / Presenter Tile -->
+        <div class="video-tile video-tile-self" id="meeting-self-preview">
+          <!-- Screen Share Simulated Container (visible when sharing) -->
+          <div id="meeting-screen-preview" class="screen-share-overlay" style="display: none;">
+            <div class="screen-share-header">
+              <span class="screen-share-tag">🖥️ You are presenting your screen</span>
+              <button type="button" class="btn btn-sm btn-stop-share" onclick="TaskflowMeetings.toggleScreenShare()">Stop Sharing</button>
+            </div>
+            <div class="screen-share-mock-ide">
+              <div class="mock-ide-top">
+                <span class="ide-dot red"></span><span class="ide-dot yellow"></span><span class="ide-dot green"></span>
+                <span class="ide-file">app/controllers/meetings_controller.py</span>
+              </div>
+              <pre class="mock-code"><code>def sync_squad_velocity():
+    # Live code walkthrough with team
+    squad = Team.query.filter_by(active=True).first()
+    return jsonify(status="aligned", velocity="100%")</code></pre>
+            </div>
           </div>
-          <p style="margin: 0; font-size: 13px; font-weight: 600;">Your Video Stream</p>
-          <span style="font-size: 11px; opacity: 0.8;">Camera & Mic Active</span>
+
+          <!-- Video Avatar / Stream view -->
+          <div class="video-self-center" id="meeting-avatar-view">
+            <div class="self-avatar-circle" id="meeting-self-avatar">YOU</div>
+            <p class="self-stream-title" id="meeting-self-name">Your Stream</p>
+            <div class="audio-wave-bars" id="meeting-audio-wave">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <!-- Hand raised badge overlay -->
+          <div id="meeting-hand-badge" class="tile-hand-raised" style="display: none;">
+            ✋ Hand Raised
+          </div>
+
+          <div class="video-tile-name" id="meeting-self-tag">
+            <span class="tile-mic-icon" id="tile-mic-status">🎤</span>
+            <span>You (Online)</span>
+          </div>
         </div>
-        <div class="video-tile-name">You (Online)</div>
+
+        <!-- Participants Side Column -->
+        <div class="video-stage-sidebar">
+          <div class="video-tile tile-participant" id="tile-host">
+            <div class="part-avatar-block">
+              <div class="part-avatar-circle host-avatar">AD</div>
+              <p class="part-name">Host Lead</p>
+              <div class="speaking-indicator">
+                <span class="speaking-dot"></span>
+                <span>Speaking</span>
+              </div>
+            </div>
+            <div class="video-tile-name">Host • Lead</div>
+          </div>
+
+          <div class="video-tile tile-participant" id="tile-peer-1">
+            <div class="part-avatar-block">
+              <div class="part-avatar-circle peer-avatar">SJ</div>
+              <p class="part-name">Sarah Jenkins</p>
+              <span class="peer-status-text">Backend Systems</span>
+            </div>
+            <div class="video-tile-name">Sarah J.</div>
+          </div>
+
+          <div class="video-tile tile-participant" id="tile-peer-2">
+            <div class="part-avatar-block">
+              <div class="part-avatar-circle peer-avatar-2">AM</div>
+              <p class="part-name">Alex Morgan</p>
+              <span class="peer-status-text">Frontend Core</span>
+            </div>
+            <div class="video-tile-name">Alex M.</div>
+          </div>
+        </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 14px;">
-        <div class="video-tile" style="flex: 1; background: #1E293B;">
-          <div style="text-align: center; color: #94A3B8;">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; margin: 0 auto 8px; color: #F8FAFC;">
-              AD
-            </div>
-            <p style="margin: 0; font-size: 12px; color: #F8FAFC;">Admin Host</p>
-            <span style="font-size: 10px; color: #22C55E;">● Speaking</span>
+      <!-- In-Room Interactive Chat Drawer (Toggleable) -->
+      <aside class="meeting-inroom-drawer" id="meeting-inroom-drawer" style="display: none;">
+        <div class="inroom-drawer-head">
+          <div class="drawer-tabs">
+            <button type="button" class="drawer-tab active" id="btn-tab-inroom-chat" onclick="TaskflowMeetings.switchDrawerTab('chat')">Chat</button>
+            <button type="button" class="drawer-tab" id="btn-tab-inroom-members" onclick="TaskflowMeetings.switchDrawerTab('members')">Participants (4)</button>
           </div>
-          <div class="video-tile-name">Host</div>
+          <button type="button" class="drawer-close-btn" onclick="TaskflowMeetings.toggleInroomDrawer()">&times;</button>
         </div>
 
-        <div class="video-tile" style="flex: 1; background: #1E293B;">
-          <div style="text-align: center; color: #94A3B8;">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; margin: 0 auto 8px; color: #F8FAFC;">
-              TM
+        <!-- Tab 1: Chat Stream -->
+        <div class="inroom-drawer-body" id="inroom-chat-body">
+          <div class="inroom-messages-list" id="inroom-messages-list">
+            <div class="inroom-msg sys-msg">Welcome to the squad meeting room!</div>
+            <div class="inroom-msg">
+              <span class="msg-sender">Sarah Jenkins:</span>
+              <span class="msg-text">Hey team, let's review the sprint deliverables.</span>
             </div>
-            <p style="margin: 0; font-size: 12px; color: #F8FAFC;">Teammates</p>
-            <span style="font-size: 10px; color: #94A3B8;">Listening</span>
           </div>
-          <div class="video-tile-name">Participants</div>
+
+          <!-- Quick Reaction Chips -->
+          <div class="inroom-quick-reactions">
+            <button type="button" onclick="TaskflowMeetings.sendReaction('👍')">👍</button>
+            <button type="button" onclick="TaskflowMeetings.sendReaction('👏')">👏</button>
+            <button type="button" onclick="TaskflowMeetings.sendReaction('❤️')">❤️</button>
+            <button type="button" onclick="TaskflowMeetings.sendReaction('🚀')">🚀</button>
+            <button type="button" onclick="TaskflowMeetings.sendReaction('💡')">💡</button>
+          </div>
+
+          <form class="inroom-chat-input-bar" id="inroom-chat-form" onsubmit="event.preventDefault(); TaskflowMeetings.sendInroomMessage();">
+            <input type="text" id="inroom-chat-input" placeholder="Type a message to squad..." autocomplete="off">
+            <button type="submit" class="inroom-chat-send" title="Send message">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </form>
         </div>
-      </div>
+
+        <!-- Tab 2: Participants List -->
+        <div class="inroom-drawer-body" id="inroom-members-body" style="display: none;">
+          <ul class="inroom-members-list">
+            <li>
+              <div class="member-info-col">
+                <div class="member-sub-avatar you">Y</div>
+                <div>
+                  <strong>You</strong>
+                  <small>Active Presenter</small>
+                </div>
+              </div>
+              <span class="badge green">Online</span>
+            </li>
+            <li>
+              <div class="member-info-col">
+                <div class="member-sub-avatar lead">AD</div>
+                <div>
+                  <strong>Admin Host</strong>
+                  <small>Meeting Organizer</small>
+                </div>
+              </div>
+              <span class="badge blue">Host</span>
+            </li>
+            <li>
+              <div class="member-info-col">
+                <div class="member-sub-avatar squad">SJ</div>
+                <div>
+                  <strong>Sarah Jenkins</strong>
+                  <small>Backend Lead</small>
+                </div>
+              </div>
+              <span class="badge gray">In Room</span>
+            </li>
+            <li>
+              <div class="member-info-col">
+                <div class="member-sub-avatar squad">AM</div>
+                <div>
+                  <strong>Alex Morgan</strong>
+                  <small>Senior Engineer</small>
+                </div>
+              </div>
+              <span class="badge gray">In Room</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
     </div>
 
+    <!-- Interactive Meeting Room Control Dock -->
     <div class="meeting-controls-bar">
-      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-mic" title="Toggle Microphone">
+      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-mic" title="Mute/Unmute Mic (M)">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
           <path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
         </svg>
       </button>
 
-      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-cam" title="Toggle Camera">
+      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-cam" title="Toggle Camera (V)">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
         </svg>
       </button>
 
-      <button type="button" class="meet-ctrl-btn btn-leave" id="btn-leave-meeting">
+      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-screen" onclick="TaskflowMeetings.toggleScreenShare()" title="Share Screen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </button>
+
+      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-hand" onclick="TaskflowMeetings.toggleRaiseHand()" title="Raise Hand (H)">
+        <span style="font-size: 18px; line-height: 1;">✋</span>
+      </button>
+
+      <button type="button" class="meet-ctrl-btn" id="btn-meeting-toggle-chat" onclick="TaskflowMeetings.toggleInroomDrawer()" title="Meeting Chat &amp; Members">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </button>
+
+      <button type="button" class="meet-ctrl-btn btn-leave" id="btn-leave-meeting" title="Leave Session">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"/>
           <line x1="23" y1="1" x2="1" y2="23"/>

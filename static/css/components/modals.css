@@ -46,7 +46,7 @@ dialog::backdrop {
 /* ==========================================================================
    2. CENTERED MODALS (Spring-Scale Entrance)
    ========================================================================== */
-dialog[open]:not([id*="drawer"]) {
+dialog[open]:not([id*="drawer"]):not(#modal-active-meeting-room):not(.meeting-room-dialog) {
   display: flex;
   flex-direction: column;
   gap: 18px;

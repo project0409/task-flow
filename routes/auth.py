@@ -70,6 +70,11 @@ def register_user():
     session["role"] = user.role
     session["user_role"] = user.role
     session["team_id"] = user.team_id
+    try:
+        from app import SERVER_STARTUP_ID
+        session["server_instance"] = SERVER_STARTUP_ID
+    except Exception:
+        pass
     return jsonify(user=user.to_dict(), message="Account created successfully."), 201
 
 @auth_bp.get("/teams")
@@ -103,6 +108,11 @@ def login():
     session["role"] = user.role
     session["user_role"] = user.role
     session["team_id"] = user.team_id
+    try:
+        from app import SERVER_STARTUP_ID
+        session["server_instance"] = SERVER_STARTUP_ID
+    except Exception:
+        pass
     return jsonify(user=user.to_dict(), message="Login successful."), 200
 
 @auth_bp.post("/logout")
@@ -233,4 +243,9 @@ def google():
     session["role"] = user.role
     session["user_role"] = user.role
     session["team_id"] = user.team_id
+    try:
+        from app import SERVER_STARTUP_ID
+        session["server_instance"] = SERVER_STARTUP_ID
+    except Exception:
+        pass
     return jsonify(user=user.to_dict()), 200

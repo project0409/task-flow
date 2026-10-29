@@ -665,6 +665,30 @@ const TaskflowTasks = {
     }
   },
 
+  appendReviewFeedback(text) {
+    const input = document.getElementById('review-feedback-input');
+    if (!input) return;
+    if (!input.value || input.value.trim() === '') {
+      input.value = text;
+    } else {
+      input.value = input.value.trim() + '\n' + text;
+    }
+    input.focus();
+  },
+
+  copyPrLink() {
+    const linkEl = document.getElementById('review-git-link');
+    if (linkEl && linkEl.href) {
+      navigator.clipboard.writeText(linkEl.href).then(() => {
+        if (window.TaskflowApp?.showNotification) {
+          window.TaskflowApp.showNotification('Pull request link copied to clipboard!', 'success');
+        } else {
+          alert('PR link copied!');
+        }
+      });
+    }
+  },
+
   viewTaskDetail(taskId) {
     const task = this.allTasks.find(t => t.id === taskId);
     if (!task) return;
@@ -702,6 +726,9 @@ const TaskflowTasks = {
 
     const badgeReview = document.getElementById('badge-review');
     if (badgeReview) badgeReview.textContent = inReviewTasks.length;
+
+    const statPending = document.getElementById('review-stat-pending');
+    if (statPending) statPending.textContent = inReviewTasks.length;
 
     if (inReviewTasks.length === 0) {
       container.innerHTML = `

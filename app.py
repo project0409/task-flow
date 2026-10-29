@@ -1,8 +1,12 @@
 import os
+import uuid
 from flask import Flask, render_template, session, redirect, url_for, jsonify, request
 from config import Config
 from models import db, bcrypt
 from models.migrate import apply_migrations
+
+# Unique runtime token generated on each server startup to ensure fresh login sessions
+SERVER_STARTUP_ID = uuid.uuid4().hex
 
 def create_app(config_class=Config):
     """Application factory for TaskFlow Pro Flask backend."""
@@ -49,6 +53,16 @@ def create_app(config_class=Config):
         return get_team_members()
 
     # Frontend Page Routes
+    @app.before_request
+    def enforce_fresh_login_per_startup():
+        """Ensure application starts from the login page on fresh server runs."""
+        if request.path.startswith("/static/"):
+            return
+        if not app.config.get("TESTING"):
+            if session.get("server_instance") != SERVER_STARTUP_ID:
+                session.clear()
+                session["server_instance"] = SERVER_STARTUP_ID
+
     @app.route("/")
     def index():
         user_id = session.get("user_id")
@@ -64,12 +78,6 @@ def create_app(config_class=Config):
     @app.route("/login")
     @app.route("/signup")
     def login_page():
-        user_id = session.get("user_id")
-        if user_id:
-            from models import User
-            if db.session.get(User, user_id):
-                return redirect(url_for("index"))
-            session.clear()
         try:
             from models import Team
             teams = Team.query.order_by(Team.name.asc()).all()
@@ -79,13 +87,6 @@ def create_app(config_class=Config):
 
     @app.route("/admin/login")
     def admin_login_page():
-        user_id = session.get("user_id")
-        if user_id:
-            from models import User
-            user = db.session.get(User, user_id)
-            if user and (user.is_admin or user.role == "Admin"):
-                return redirect(url_for("index"))
-            session.clear()
         return render_template("admin_login.html")
 
     @app.route("/dashboard")

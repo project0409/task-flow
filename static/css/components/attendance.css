@@ -1,216 +1,474 @@
 /**
- * Taskflow Attendance Tracking & Leave Management Styles
- * Digital clock, check-in widget, visual presence indicators, and leave approval queue.
+ * Taskflow Attendance Tracking & Leave Management — Modern Interactive Styles
+ * Digital Live Clock, Ergonomic Shift Tracker, Interactive Presence Roster,
+ * Leave Approval Command Queue, and Work History.
  */
 
-.attendance-grid {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 20px;
+/* ── 1. Attendance Check-in Hero Banner ─────────────────────────────────── */
+.attendance-checkin-hero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #0F2D1F 100%);
+  border-radius: var(--radius-lg, 16px);
+  padding: 28px 32px;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
   margin-bottom: 24px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.18);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* 1. Check-In & Live Clock Widget */
-.checkin-widget-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
+.attendance-checkin-hero::before {
+  content: '';
+  position: absolute;
+  right: -50px;
+  top: -60px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(46, 125, 50, 0.22) 0%, rgba(46, 125, 50, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-clock-block {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
+  gap: 6px;
   position: relative;
+  z-index: 1;
 }
 
-.live-digital-clock {
+.hero-digital-clock {
   font-family: 'SF Mono', 'Fira Code', 'Roboto Mono', monospace;
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 800;
-  color: var(--color-brand-primary);
-  letter-spacing: -0.02em;
-  margin: 12px 0 4px;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+  line-height: 1;
 }
 
-.live-clock-date {
+.hero-date-str {
+  font-size: 13.5px;
+  color: #94A3B8;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-status-subtitle {
+  margin: 6px 0 0;
   font-size: 13px;
-  color: var(--color-text-muted);
-  margin-bottom: 20px;
+  font-weight: 600;
+  color: #CBD5E1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-session-metrics {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #94A3B8;
+}
+
+.hero-session-metrics span b {
+  color: #4ADE80;
+}
+
+.hero-action-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .hero-action-block {
+    align-items: stretch;
+    width: 100%;
+  }
 }
 
 .checkin-action-btn {
-  width: 100%;
-  padding: 14px 20px;
+  padding: 14px 28px;
   font-size: 15px;
-  font-weight: 700;
-  border-radius: var(--radius-full);
+  font-weight: 800;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all var(--duration-fast);
-  box-shadow: 0 4px 12px var(--color-brand-glow);
+  gap: 10px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: -0.2px;
 }
 
 .checkin-action-btn.btn-in {
-  background: var(--color-brand-primary);
+  background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
   color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.35);
 }
 
 .checkin-action-btn.btn-in:hover {
-  background: var(--color-brand-hover);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(22, 163, 74, 0.45);
 }
 
 .checkin-action-btn.btn-out {
-  background: #E11D48;
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
   color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.35);
 }
 
 .checkin-action-btn.btn-out:hover {
-  background: #BE123C;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(220, 38, 38, 0.45);
+}
+
+.btn-open-leave-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 10px !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-open-leave-btn:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
   transform: translateY(-1px);
 }
 
-.attendance-today-session-info {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--color-border);
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-size: 12.5px;
-  color: var(--color-text-secondary);
-}
-
-/* 2. Attendance Metrics Summary */
+/* ── 2. Attendance Metric Cards ─────────────────────────────────────────── */
 .attendance-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
+  margin-bottom: 24px;
 }
 
 .att-metric-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-lg, 14px);
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: var(--shadow-sm);
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.att-metric-label {
+.att-metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  border-color: var(--color-brand-primary, #2E7D32);
+}
+
+.att-metric-title {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-muted);
+  font-weight: 700;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.5px;
 }
 
-.att-metric-val {
-  font-size: 28px;
+.att-metric-value {
+  font-size: 26px;
   font-weight: 800;
   color: var(--color-text-primary);
-  line-height: 1;
+  line-height: 1.15;
+  margin: 4px 0 2px;
 }
 
 .att-metric-sub {
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* 3. Presence Indicators */
+/* ── 3. Squad Visual Presence Grid ──────────────────────────────────────── */
+.teammates-presence-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+  padding: 16px 0 0;
+}
+
+.teammate-presence-card {
+  background: var(--color-canvas-subtle, #F9FAFB);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.teammate-presence-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-brand-primary, #2E7D32);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
 .avatar-presence-wrap {
   position: relative;
   display: inline-flex;
 }
 
+.avatar-presence-wrap .avatar-sm {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
 .presence-dot {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   position: absolute;
-  bottom: -1px;
-  right: -1px;
-  border: 2px solid var(--color-surface);
+  bottom: 0px;
+  right: 0px;
+  border: 2px solid var(--color-surface, #FFFFFF);
 }
 
 .presence-dot.online {
-  background: #22C55E; /* Emerald active green */
+  background: #22C55E;
+  box-shadow: 0 0 6px #22C55E;
 }
 
 .presence-dot.on-leave {
-  background: #F59E0B; /* Amber calendar indicator */
+  background: #F59E0B;
 }
 
-/* 4. Leave Management Tables & Cards */
-.leave-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  font-size: 11.5px;
-  font-weight: 600;
-}
-
-.leave-badge.Pending {
-  background: var(--color-warning-bg);
-  color: var(--color-warning-fg);
-  border: 1px solid var(--color-warning-border);
-}
-
-.leave-badge.Approved {
-  background: var(--color-success-bg);
-  color: var(--color-success-fg);
-  border: 1px solid var(--color-success-border);
-}
-
-.leave-badge.Rejected {
-  background: var(--color-error-bg);
-  color: var(--color-error-fg);
-  border: 1px solid var(--color-error-border);
-}
-
-/* Teammates Presence Roster */
-.teammates-presence-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.teammate-presence-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.teammate-presence-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .teammate-presence-info h5 {
-  margin: 0;
+  margin: 0 0 3px;
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.teammate-presence-info p {
-  margin: 2px 0 0;
+/* ── 4. Leave Approval Table & Management ───────────────────────────────── */
+#leave-approval-card .table-wrap,
+[data-view="attendance"] .table-wrap {
+  background: var(--color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  margin-top: 14px;
+}
+
+[data-view="attendance"] table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+[data-view="attendance"] th {
+  background: var(--color-canvas-subtle, #F8FAFC);
+  padding: 12px 16px;
   font-size: 11.5px;
-  color: var(--color-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.5px;
+  border-bottom: 1.5px solid var(--color-border);
+  text-align: left;
 }
 
-@media (max-width: 900px) {
-  .attendance-grid {
-    grid-template-columns: 1fr;
-  }
+[data-view="attendance"] td {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+[data-view="attendance"] tr:last-child td {
+  border-bottom: none;
+}
+
+[data-view="attendance"] tr:hover td {
+  background: var(--color-canvas-subtle, #F9FAFB);
+}
+
+.leave-type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.leave-type-pill.PTO,
+.leave-type-pill.Paid {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803D;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.leave-type-pill.Sick {
+  background: rgba(239, 68, 68, 0.12);
+  color: #DC2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.leave-type-pill.Casual {
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563EB;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.leave-type-pill.Emergency {
+  background: rgba(245, 158, 11, 0.12);
+  color: #B45309;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.btn-approve-leave {
+  background: #16A34A;
+  color: #FFFFFF;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-approve-leave:hover {
+  background: #15803D;
+  transform: translateY(-1px);
+}
+
+.btn-reject-leave {
+  background: transparent;
+  color: #DC2626;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: all 0.15s;
+}
+
+.btn-reject-leave:hover {
+  background: #FEE2E2;
+}
+
+/* ── 5. Apply for Leave Modal ───────────────────────────────────────────── */
+#modal-apply-leave {
+  width: min(520px, 94vw);
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+}
+
+#modal-apply-leave .dialog-h {
+  background: linear-gradient(135deg, #1B5E20, #2E7D32);
+  color: #FFFFFF;
+  padding: 20px 24px;
+}
+
+#modal-apply-leave .dialog-h h3 {
+  color: #FFFFFF;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+#modal-apply-leave .dialog-h .card-sub {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 2px 0 0;
+}
+
+#modal-apply-leave .dialog-h .btn-close {
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
+}
+
+#form-apply-leave {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#form-apply-leave label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#form-apply-leave input,
+#form-apply-leave select,
+#form-apply-leave textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  box-sizing: border-box;
+}
+
+#form-apply-leave input:focus,
+#form-apply-leave select:focus,
+#form-apply-leave textarea:focus {
+  border-color: var(--color-brand-primary, #2E7D32);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
 }
